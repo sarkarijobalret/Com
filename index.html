@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>India Yojana & Finance Portal</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --primary:#1565c0;
+    --bg:#f7f9fc;
+    --card:#ffffff;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    font-family:'Poppins',sans-serif;
+    background:var(--bg);
+    color:#222;
+    -webkit-font-smoothing:antialiased;
+  }
+  /* compact header */
+  header{
+    background:var(--primary);
+    color:#fff;
+    padding:10px 14px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    justify-content:space-between;
+    flex-wrap:wrap;
+  }
+  header .brand{
+    display:flex;gap:10px;align-items:center;
+  }
+  header h1{font-size:16px;margin:0;font-weight:600;letter-spacing:0.3px;}
+  header p{margin:0;font-size:12px;opacity:0.9}
+  .top-controls{display:flex;gap:8px;align-items:center;}
+  .lang-btn, .mini-link{background:#fff;color:var(--primary);border-radius:6px;padding:6px 10px;border:none;font-weight:600;cursor:pointer;font-size:13px}
+  .mini-link{background:transparent;color:#fff;border:1px solid rgba(255,255,255,0.15)}
+  nav{display:flex;gap:8px;flex-wrap:wrap;padding:10px;background:#e8f4ff;justify-content:center}
+  nav a{background:#fff;color:var(--primary);padding:7px 12px;border-radius:6px;text-decoration:none;font-weight:600;box-shadow:0 1px 3px rgba(0,0,0,0.06)}
+  main{max-width:1100px;margin:16px auto;padding:0 12px;}
+  .panel{background:var(--card);padding:14px;border-radius:10px;margin-bottom:16px;box-shadow:0 6px 16px rgba(21,101,192,0.06)}
+  .controls{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+  .controls input[type="search"], .controls select{flex:1;padding:9px;border-radius:8px;border:1px solid #d7e8ff}
+  .controls .small{width:160px}
+  .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+  @media(max-width:900px){.grid{grid-template-columns:repeat(1,1fr)}}
+  .card{
+    padding:10px;border-radius:8px;background:#fbfdff;border-left:6px solid var(--primary);cursor:pointer;transition:all .18s;display:flex;flex-direction:column;gap:8px;
+  }
+  .card:hover{transform:translateY(-4px);box-shadow:0 8px 20px rgba(0,0,0,0.06)}
+  .card h3{margin:0;font-size:15px}
+  .card p{margin:0;font-size:13px;color:#333;opacity:0.92}
+  .detail{display:none;padding:10px;border-radius:8px;background:#eef6ff;margin-top:8px}
+  .meta{display:flex;gap:8px;flex-wrap:wrap;font-size:13px;color:#154a7a}
+  .apply{display:inline-block;margin-top:8px;padding:6px 10px;background:var(--primary);color:#fff;border-radius:6px;text-decoration:none;font-weight:600}
+  /* small footer */
+  footer{padding:10px;background:var(--primary);color:#fff;text-align:center;border-top-left-radius:6px;border-top-right-radius:6px}
+  /* tags */
+  .tag{background:#eaf4ff;color:var(--primary);padding:4px 8px;border-radius:999px;font-weight:600;font-size:12px}
+  .hidden{display:none !important}
+  /* search empty */
+  .empty{padding:18px;text-align:center;color:#666}
+  /* EMI box */
+  .emi-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;align-items:end}
+  @media(max-width:600px){.emi-row{grid-template-columns:1fr;}}
+  .result{font-weight:700;color:var(--primary);margin-top:10px}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <div style="background:#fff;padding:6px;border-radius:8px"><img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='26' height='26' viewBox='0 0 24 24' fill='%231565c0'><path d='M12 2L2 7l10 5 10-5-10-5zm0 6.5L4 7.1v6.9L12 16l8-2.1V7.1L12 8.5zM2 17v2l10 5 10-5v-2L12 20 2 17z'/></svg>" alt="logo"></div>
+    <div>
+      <h1 id="site-title">India Yojana & Finance Portal</h1>
+      <p id="site-tag">सभी योजनाएँ • Loans • Sarkari Jobs</p>
+    </div>
+  </div>
+
+  <div class="top-controls">
+    <button class="lang-btn" id="toggleLang">हिन्दी / EN</button>
+    <a class="mini-link" href="https://sarkariprep.in/en/jobs/" target="_blank">Sarkari Jobs</a>
+  </div>
+</header>
+
+<nav>
+  <a href="#schemes">Yojanas / योजनाएँ</a>
+  <a href="#finance">Loans & Finance</a>
+  <a href="#emi">EMI Calculator</a>
+  <a href="#jobs">Jobs</a>
+</nav>
+
+<main>
+
+  <!-- Search + Filter -->
+  <section class="panel">
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
+      <div style="flex:1;min-width:220px">
+        <input id="search" type="search" placeholder="Search by scheme name / योजना खोजें" style="width:100%;padding:10px;border-radius:8px;border:1px solid #e4f0ff">
+      </div>
+      <div style="min-width:220px;display:flex;gap:8px;align-items:center">
+        <select id="category" style="padding:10px;border-radius:8px;border:1px solid #e4f0ff">
+          <option value="">All Categories / सभी</option>
+          <option value="women">Women / महिला</option>
+          <option value="farmer">Farmer / किसान</option>
+          <option value="student">Student / छात्र</option>
+          <option value="employment">Employment / रोजगार</option>
+          <option value="health">Health / स्वास्थ्य</option>
+          <option value="finance">Finance / वित्त</option>
+          <option value="senior">Senior / वरिष्ठ नागरिक</option>
+        </select>
+        <button id="clearBtn" class="lang-btn" style="background:#fff;color:var(--primary)">Clear</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Schemes list -->
+  <section id="schemes" class="panel">
+    <h2 id="heading-schemes">Government Schemes / योजनाएँ (60+)</h2>
+
+    <div id="list" class="grid"></div>
+    <div id="nores" class="empty hidden">No schemes found / कोई योजना नहीं मिली</div>
+  </section>
+
+  <!-- Finance / Loans -->
+  <section id="finance" class="panel">
+    <h2 id="heading-finance">Loans & Finance Offers / लोन और फाइनेंस</h2>
+    <div class="grid" id="financeList"></div>
+  </section>
+
+  <!-- EMI Calculator -->
+  <section id="emi" class="panel">
+    <h2 id="heading-emi">EMI Calculator / EMI कैलकुलेटर</h2>
+    <div>
+      <div class="emi-row">
+        <div><label id="lbl-amount">Loan Amount (₹) / लोन राशि:</label><input id="emi-amount" type="number" placeholder="100000"></div>
+        <div><label id="lbl-rate">Interest Rate (% per annum) / ब्याज दर (%):</label><input id="emi-rate" type="number" placeholder="10"></div>
+        <div><label id="lbl-tenure">Tenure (Months) / अवधि (महीने):</label><input id="emi-months" type="number" placeholder="12"></div>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">
+        <button onclick="calculateEMI()">Calculate / निकालें</button>
+        <button onclick="resetEMI()" style="background:#eee;color:var(--primary)">Reset</button>
+      </div>
+      <div id="emiResult" class="result"></div>
+    </div>
+  </section>
+
+  <!-- Jobs -->
+  <section id="jobs" class="panel">
+    <h2 id="heading-jobs">Sarkari Jobs / सरकारी नौकरी</h2>
+    <p>Latest Govt Jobs — click to open: <a href="https://sarkariprep.in/en/jobs/" target="_blank" class="apply">sarkariprep.in/en/jobs</a></p>
+  </section>
+
+</main>
+
+<footer>© 2025 India Yojana & Finance Portal — Toutes les langues / सभी भाषाओं में जानकारी</footer>
+
+<script>
+/* ---------- DATA: 60+ schemes (HI + EN) ---------- */
+/* Each item: id, name_hi, name_en, category, desc_hi, desc_en, link */
+const schemes = [
+  {id:'pmay', name_hi:'प्रधानमंत्री आवास योजना (PMAY)', name_en:'Pradhan Mantri Awas Yojana (PMAY)', category:'finance', desc_hi:'गरीब और मध्यम वर्ग के लिए घर खरीदने/बनाने पर सब्सिडी।', desc_en:'Subsidy for affordable housing for poor and middle class.', link:'https://pmaymis.gov.in/'},
+  {id:'pmkisan', name_hi:'प्रधानमंत्री किसान सम्मान निधि (PM-KISAN)', name_en:'PM-KISAN', category:'farmer', desc_hi:'किसानों को प्रतिवर्ष आर्थिक सहायता।', desc_en:'Direct income support for farmers.', link:'https://pmkisan.gov.in/'},
+  {id:'ayushman', name_hi:'आयुष्मान भारत (PM-JAY)', name_en:'Ayushman Bharat (PM-JAY)', category:'health', desc_hi:'गरीब परिवारों को स्वास्थ्य बीमा ₹5 लाख तक।', desc_en:'Health insurance cover up to ₹5 lakh for eligible families.', link:'https://pmjay.gov.in/'},
+  {id:'sukanya', name_hi:'सुकन्या समृद्धि योजना', name_en:'Sukanya Samriddhi Yojana', category:'women', desc_hi:'लड़कियों के लिए बचत स्कीम।', desc_en:'Savings scheme for girl child.', link:'https://www.nsiindia.gov.in/InternalPage.aspx?Id_Pk=89'},
+  {id:'pmkv', name_hi:'प्रधानमंत्री कौशल विकास योजना (PMKVY)', name_en:'PMKVY - Skill Development', category:'student', desc_hi:'युवाओं के लिए स्किल ट्रेनिंग।', desc_en:'Skill training programs for youth.', link:'https://www.pmkvyofficial.org/'},
+  {id:'mudra', name_hi:'प्रधानमंत्री मुद्रा योजना (PMMY)', name_en:'Pradhan Mantri MUDRA Yojana', category:'employment', desc_hi:'छोटे व्यवसायों को लोन सुविधा।', desc_en:'Loans for small and micro enterprises.', link:'https://www.mudra.org.in/'},
+  {id:'startup', name_hi:'Startup India', name_en:'Startup India', category:'employment', desc_hi:'स्टार्टअप्स के लिए समर्थन और लाभ।', desc_en:'Support and benefits for startups.', link:'https://www.startupindia.gov.in/'},
+  {id:'standup', name_hi:'Stand Up India', name_en:'Stand Up India', category:'employment', desc_hi:'महिला/SC/ST उद्यमियों के लिए लोन।', desc_en:'Loans for SC/ST and women entrepreneurs.', link:'https://www.standupmitra.in/'},
+  {id:'nrega', name_hi:'मनरेगा (MGNREGA)', name_en:'MGNREGA', category:'employment', desc_hi:'ग्रामीण रोजगार गारंटी योजना।', desc_en:'Rural employment guarantee scheme.', link:'https://nrega.nic.in/'},
+  {id:'pmjay', name_hi:'जन आरोग्य / राष्ट्रीय स्वास्थ्य मिशन (NHM)', name_en:'National Health Mission', category:'health', desc_hi:'स्वास्थ्य सुविधाओं का विस्तार।', desc_en:'Strengthening health systems at national/state level.', link:'https://nhm.gov.in/'},
+  {id:'janani', name_hi:'जननी सुरक्षा योजना / JSY', name_en:'Janani Suraksha Yojana', category:'health', desc_hi:'मातृत्व लाभ और सुरक्षित प्रसव के लिए योजना।', desc_en:'Maternity benefits and safe delivery scheme.', link:'https://nhm.gov.in/'},
+  {id:'pmjdy', name_hi:'प्रधानमंत्री जन-धन योजना', name_en:'Pradhan Mantri Jan Dhan Yojana', category:'finance', desc_hi:'बैंकिंग इंडिया सिलेबस - बैंकिंग सेवाओं का विस्तार।', desc_en:'Financial inclusion and bank accounts for all.', link:'https://pmjdy.gov.in/'},
+  {id:'ujjwala', name_hi:'प्रधानमंत्री उज्ज्वला योजना', name_en:'PM Ujjwala Yojana', category:'health', desc_hi:'रसोई गैस कनैक्शन के लिए समर्थन।', desc_en:'Provide LPG connections to women from BPL households.', link:'https://pmuy.gov.in/'},
+  {id:'swasthya', name_hi:'स्वस्थ भारत मिशन / Poshan Abhiyaan', name_en:'POSHAN Abhiyaan', category:'health', desc_hi:'पोषण और स्वास्थ्य सुधार।', desc_en:'Nutrition mission for mothers and children.', link:'https://poshanabhiyaan.gov.in/'},
+  {id:'pmfby', name_hi:'प्रधानमंत्री फसल बीमा योजना (PMFBY)', name_en:'Pradhan Mantri Fasal Bima Yojana', category:'farmer', desc_hi:'फसलों के लिए बीमा कवरेज।', desc_en:'Crop insurance for farmers.', link:'https://pmfby.gov.in/'},
+  {id:'soil', name_hi:'मृदा स्वास्थ्य कार्ड योजना', name_en:'Soil Health Card Scheme', category:'farmer', desc_hi:'मिट्टी की जाँच और सुझाव।', desc_en:'Soil testing and recommendations for farmers.', link:'https://soilhealth.dac.gov.in/'},
+  {id:'kcc', name_hi:'किसान क्रेडिट कार्ड (KCC)', name_en:'Kisan Credit Card', category:'farmer', desc_hi:'कृषि लोन हेतु कार्ड।', desc_en:'Credit facility to farmers for cultivation.', link:'#'},
+  {id:'pmkisan', name_hi:'PM-KISAN (पूरक)', name_en:'PM-KISAN continued', category:'farmer', desc_hi:'किसानों को आय सहायता।', desc_en:'Income support scheme.', link:'https://pmkisan.gov.in/'},
+  {id:'scholarship', name_hi:'नेशनल स्कॉलरशिप पोर्टल', name_en:'National Scholarship Portal', category:'student', desc_hi:'छात्रवृत्तियाँ और फंडिंग।', desc_en:'All central and state scholarship schemes.', link:'https://scholarships.gov.in/'},
+  {id:'midday', name_hi:'मिड-डे मील योजना', name_en:'Mid Day Meal Scheme', category:'student', desc_hi:'स्कूल में बच्चों को पौष्टिक भोजन।', desc_en:'Nutritious meals for school children.', link:'#'},
+  {id:'skillindia', name_hi:'Skill India', name_en:'Skill India', category:'student', desc_hi:'कौशल विकास और प्रशिक्षण।', desc_en:'Skill training initiatives.', link:'#'},
+  {id:'pension', name_hi:'आत्मनिर्भर पेंशन / PM Vaya Vandana', name_en:'Vaya Vandana / Pension schemes', category:'senior', desc_hi:'वरिष्ठ नागरिकों के लिए पेंशन विकल्प।', desc_en:'Pension schemes for elderly citizens.', link:'#'},
+  {id:'atm', name_hi:'अटल पेंशन योजना (APY)', name_en:'Atal Pension Yojana', category:'senior', desc_hi:'न्यूनतम पेंशन सुनिश्चित करना।', desc_en:'Provide minimum pension after retirement.', link:'#'},
+  {id:'igmp', name_hi:'इंदिरा आवास/गरीब सहायता', name_en:'Various state welfare housing', category:'finance', desc_hi:'राज्य/केंद्र द्वारा आवास सहायता।', desc_en:'Housing support by central/state government.', link:'#'},
+  {id:'swachh', name_hi:'स्वच्छ भारत मिशन', name_en:'Swachh Bharat Mission', category:'health', desc_hi:'सफाई और शौचालय सुविधा।', desc_en:'Sanitation and toilet facilities.', link:'https://swachhbharatmission.gov.in/'},
+  {id:'jal', name_hi:'जल जीवन मिशन', name_en:'Jal Jeevan Mission', category:'health', desc_hi:'ग्रामीण घरों में नल का पानी।', desc_en:'Tap water supply to rural households.', link:'https://jaljeevanmission.gov.in/'},
+  {id:'saubhagya', name_hi:'सौभग्य (ग्रिड कनेक्शन)', name_en:'Saubhagya - Electricity connections', category:'health', desc_hi:'बिजली कनेक्शन योजना।', desc_en:'Household electrification scheme.', link:'#'},
+  {id:'pradhanmantri', name_hi:'प्रधानमंत्री कर्मचारी योजना', name_en:'Various central employee schemes', category:'finance', desc_hi:'कर्मचारियों के लिए लाभ।', desc_en:'Central employee benefit schemes.', link:'#'},
+  {id:'pmjay', name_hi:'PM Jan Arogya / Ayushman Bharat (दोहराना)', name_en:'Ayushman Bharat (again)', category:'health', desc_hi:'हेल्थ कवरेज।', desc_en:'Health coverage scheme.', link:'https://pmjay.gov.in/'},
+  {id:'jalyukt', name_hi:'जल संरक्षण/रिटेन्ज़', name_en:'Water conservation schemes', category:'health', desc_hi:'पानी संरक्षण और परियोजनाएँ।', desc_en:'Water conservation projects.', link:'#'},
+  {id:'pmf', name_hi:'प्रधानमंत्री फल एवं सब्जी योजनाएँ', name_en:'Horticulture & allied', category:'farmer', desc_hi:'बागवानी सहायता।', desc_en:'Support for horticulture.', link:'#'},
+  {id:'missionbima', name_hi:'राष्ट्रीय सामाजिक सहायता कार्यक्रम (NSAP)', name_en:'National Social Assistance Programme', category:'senior', desc_hi:'गरीब व वृद्धों के लिए सहायता।', desc_en:'Assistance to elderly/disabled/widowed.', link:'#'},
+  {id:'esharm', name_hi:'e-Shram पोर्टल', name_en:'e-Shram portal', category:'employment', desc_hi:'श्रमिकों का डेटाबेस और लाभ।', desc_en:'Universal DB for unorganised workers.', link:'https://eshram.gov.in/'},
+  {id:'pmgky', name_hi:'प्रधानमंत्री गरीब कल्याण योजना', name_en:'PM Garib Kalyan', category:'finance', desc_hi:'गरीबों के लिए राहत पैकेज।', desc_en:'Welfare measures for poor.', link:'#'},
+  {id:'pmuy', name_hi:'PM Ujjwala (again)', name_en:'Ujjwala Scheme', category:'health', desc_hi:'एलपीजी कनेक्शन सहायता।', desc_en:'LPG connections for women.', link:'https://pmuy.gov.in/'},
+  {id:'pmkvy', name_hi:'PMKVY (दोहराना)', name_en:'PMKVY (skills)', category:'student', desc_hi:'स्किल ट्रेनिंग।', desc_en:'Skill training.', link:'https://www.pmkvyofficial.org/'},
+  {id:'pmf', name_hi:'पीएम किसान निधि (repeat)', name_en:'PM-KISAN repeat', category:'farmer', desc_hi:'किसानों के लिए आर्थिक सहायता।', desc_en:'Farmer financial support.', link:'https://pmkisan.gov.in/'},
+  {id:'udyam', name_hi:'उद्योग आधार / Udyam', name_en:'Udyam Registration', category:'employment', desc_hi:'MSME रजिस्ट्रेशन और लाभ।', desc_en:'MSME registration benefits.', link:'https://udyamregistration.gov.in/'},
+  {id:'pmmsy', name_hi:'SAMPADA / खाद्य प्रसंस्करण', name_en:'SAMPADA - Food processing', category:'farmer', desc_hi:'खाद्य प्रसंस्करण में सहायता।', desc_en:'Support for food processing sector.', link:'#'},
+  {id:'pmrrf', name_hi:'PM Relif व अन्य', name_en:'Various relief schemes', category:'finance', desc_hi:'आपात सहायता योजनाएँ।', desc_en:'Emergency relief measures.', link:'#'},
+  {id:'pmegp', name_hi:'PMEGP', name_en:'Prime Minister Employment Generation Programme', category:'employment', desc_hi:'व्यवसाय और स्वरोजगार के लिए मदद।', desc_en:'Support for micro enterprises.', link:'#'},
+  {id:'pds', name_hi:'पब्लिक डिस्ट्रीब्यूशन सिस्टम (PDS)', name_en:'Public Distribution System', category:'health', desc_hi:'राशन और खाद्य सुरक्षा।', desc_en:'Food security through subsidised ration.', link:'#'},
+  {id:'anm', name_hi:' ICDS / Anganwadi / Poshan', name_en:'ICDS & Anganwadi services', category:'health', desc_hi:'बच्चों व माताओं का पोषण।', desc_en:'Child and maternal nutrition programs.', link:'#'},
+  {id:'pmsv', name_hi:'PM SVANidhi', name_en:'PM SVANidhi (Street vendors)', category:'employment', desc_hi:'स्ट्रीट वेंडरों को माइक्रो-लोन।', desc_en:'Micro loans for street vendors.', link:'#'},
+  {id:'pradhanmantriskaushal', name_hi:'Kaushal vikas तथा अभ्यास', name_en:'Skill & training schemes', category:'student', desc_hi:'रोजगार के लिए प्रशिक्षण।', desc_en:'Training for employment.', link:'#'},
+  {id:'pmsvayu', name_hi:'PM Vaya Vandana', name_en:'Vaya Vandana Pension', category:'senior', desc_hi:'वरिष्ठ नागरिकों के लिए पेंशन।', desc_en:'Pension for elderly.', link:'#'},
+  {id:'janman', name_hi:'जनमान्य और सामाजिक कल्याण', name_en:'Social welfare schemes', category:'finance', desc_hi:'विविध कल्याण योजनाएँ।', desc_en:'Various welfare programs.', link:'#'},
+  {id:'khelo', name_hi:'Khelo India', name_en:'Khelo India (Sports)', category:'student', desc_hi:'खेल विकास कार्यक्रम।', desc_en:'Sports talent development scheme.', link:'#'},
+  {id:'eNAM', name_hi:'eNAM', name_en:'eNAM - National Agriculture Market', category:'farmer', desc_hi:'कृषि उपज के लिए डिजिटल बाजार।', desc_en:'Electronic trading portal for agriculture.', link:'#'},
+  {id:'covidrelief', name_hi:'कोविड रिलीफ व पैकेज', name_en:'COVID relief packages', category:'finance', desc_hi:'विशेष राहत पैकेज।', desc_en:'COVID related relief measures.', link:'#'},
+  {id:'pmc', name_hi:'Pradhan Mantri Credit schemes', name_en:'Credit schemes (various)', category:'finance', desc_hi:'कर्ज और क्रेडिट स्कीम।', desc_en:'Various credit facilities.', link:'#'},
+  {id:'otherstate', name_hi:'State specific schemes', name_en:'State-specific schemes', category:'finance', desc_hi:'प्रत्येक राज्य की योजनाएँ (राज्य पेज पर)।', desc_en:'State-level schemes (link to state pages).', link:'#'}
+];
+
+/* ---------- FINANCE offers (a few) ---------- */
+const finances = [
+  {id:'fin1', name_hi:'Personal Loan - Bajaj Finance', name_en:'Personal Loan - Bajaj Finance', desc_hi:'इंन्टेन्ट पर्सनल लोन।', desc_en:'Instant personal loans.', link:'https://www.bajajfinserv.in/'},
+  {id:'fin2', name_hi:'Home Loan - HDFC', name_en:'Home Loan - HDFC Bank', desc_hi:'होम लोन और PMAY सहायता', desc_en:'Home loans with PMAY subsidy info', link:'https://www.hdfc.com/'},
+  {id:'fin3', name_hi:'Education Loan - SBI', name_en:'Education Loan - SBI', desc_hi:'पढ़ाई के लिए शिक्षा लोन।', desc_en:'Student loans for study in India/abroad', link:'https://sbi.co.in/'},
+  {id:'fin4', name_hi:'Car Loan - ICICI', name_en:'Car Loan - ICICI Bank', desc_hi:'वैन/कार लोन।', desc_en:'Auto loans and EMI options', link:'https://www.icicibank.com/'},
+  {id:'fin5', name_hi:'Startup Loan - Udyam', name_en:'Startup/Business Loan - Udyam', desc_hi:'MSME और बिजनेस लोन।', desc_en:'Loan support for startups/small biz', link:'https://udyamregistration.gov.in/'}
+];
+
+/* ---------- render functions ---------- */
+const listEl = document.getElementById('list');
+const financeListEl = document.getElementById('financeList');
+const nores = document.getElementById('nores');
+const searchInput = document.getElementById('search');
+const categorySelect = document.getElementById('category');
+const clearBtn = document.getElementById('clearBtn');
+let lang = 'hi'; // default Hindi
+
+function renderSchemes(items){
+  listEl.innerHTML = '';
+  if(!items.length){ nores.classList.remove('hidden'); return; } else nores.classList.add('hidden');
+  items.forEach(s=>{
+    const card = document.createElement('div'); card.className='card';
+    card.innerHTML = `
+      <div>
+        <h3>${lang==='hi' ? s.name_hi : s.name_en}</h3>
+        <div class="meta"><span class="tag">${s.category}</span></div>
+        <p>${lang==='hi' ? s.desc_hi : s.desc_en}</p>
+        <a href="${s.link || '#'}" target="_blank" class="apply">${lang==='hi' ? 'आवेदन करें / Apply' : 'Apply Now'}</a>
+      </div>
+    `;
+    listEl.appendChild(card);
+  });
+}
+
+function renderFinance(list){
+  financeListEl.innerHTML='';
+  list.forEach(f=>{
+    const c = document.createElement('div'); c.className='card';
+    c.innerHTML = `<h3>${lang==='hi'?f.name_hi:f.name_en}</h3><p>${lang==='hi'?f.desc_hi:f.desc_en}</p><a href="${f.link}" target="_blank" class="apply">${lang==='hi'?'Apply/आवेदन':'Apply/आवेदन'}</a>`;
+    financeListEl.appendChild(c);
+  });
+}
+
+/* initial render */
+renderSchemes(schemes);
+renderFinance(finances);
+
+/* ---------- search & filter ---------- */
+function filterAndRender(){
+  const q = (searchInput.value||'').trim().toLowerCase();
+  const cat = categorySelect.value;
+  let filtered = schemes.filter(s=>{
+    const nameCombined = (s.name_hi + ' ' + s.name_en).toLowerCase();
+    const descCombined = (s.desc_hi + ' ' + s.desc_en).toLowerCase();
+    const matchQ = q ? (nameCombined.includes(q) || descCombined.includes(q)) : true;
+    const matchCat = cat ? s.category===cat : true;
+    return matchQ && matchCat;
+  });
+  renderSchemes(filtered);
+}
+
+searchInput.addEventListener('input', filterAndRender);
+categorySelect.addEventListener('change', filterAndRender);
+clearBtn.addEventListener('click', ()=>{searchInput.value='';categorySelect.value='';filterAndRender();});
+
+/* ---------- language toggle ---------- */
+document.getElementById('toggleLang').addEventListener('click', ()=>{
+  lang = (lang==='hi')?'en':'hi';
+  // update headings
+  document.getElementById('site-title').innerText = (lang==='hi')? 'India Yojana & Finance Portal' : 'India Yojana & Finance Portal';
+  document.getElementById('site-tag').innerText = (lang==='hi')? 'सभी योजनाएँ • Loans • Sarkari Jobs' : 'All Schemes • Loans • Sarkari Jobs';
+  document.getElementById('heading-schemes').innerText = (lang==='hi')? 'Government Schemes / योजनाएँ (60+)' : 'Government Schemes / योजनाएँ (60+)';
+  document.getElementById('heading-finance').innerText = (lang==='hi')? 'Loans & Finance Offers / लोन और फाइनेंस' : 'Loans & Finance Offers';
+  document.getElementById('heading-emi').innerText = (lang==='hi')? 'EMI Calculator / EMI कैलकुलेटर' : 'EMI Calculator';
+  document.getElementById('heading-jobs').innerText = (lang==='hi')? 'Sarkari Jobs / सरकारी नौकरी' : 'Sarkari Jobs';
+  document.getElementById('search').placeholder = (lang==='hi')? 'Search by scheme name / योजना खोजें' : 'Search by scheme name';
+  // labels for EMI
+  document.getElementById('lbl-amount').innerText = (lang==='hi')? 'Loan Amount (₹) / लोन राशि:' : 'Loan Amount (₹):';
+  document.getElementById('lbl-rate').innerText = (lang==='hi')? 'Interest Rate (% per annum) / ब्याज दर (%):' : 'Interest Rate (% p.a):';
+  document.getElementById('lbl-tenure').innerText = (lang==='hi')? 'Tenure (Months) / अवधि (महीने):' : 'Tenure (Months):';
+  // rerender lists
+  renderSchemes(schemes);
+  renderFinance(finances);
+});
+
+/* ---------- EMI calculation ---------- */
+function calculateEMI(){
+  const P = parseFloat(document.getElementById('emi-amount').value);
+  const annualR = parseFloat(document.getElementById('emi-rate').value);
+  const n = parseInt(document.getElementById('emi-months').value,10);
+  if(!P || !annualR || !n){ alert(lang==='hi' ? 'कृपया सभी फ़ील्ड सही भरें' : 'Please fill all fields correctly'); return; }
+  const r = annualR/12/100;
+  const emi = (P * r * Math.pow(1+r, n))/(Math.pow(1+r, n)-1);
+  const total = emi * n;
+  const interest = total - P;
+  document.getElementById('emiResult').innerHTML = (lang==='hi' ? 
+    `मासिक EMI: ₹${emi.toFixed(2)}  • कुल भुगतान: ₹${total.toFixed(2)}  • कुल ब्याज: ₹${interest.toFixed(2)}` :
+    `Monthly EMI: ₹${emi.toFixed(2)}  • Total Payable: ₹${total.toFixed(2)}  • Total Interest: ₹${interest.toFixed(2)}`
+  );
+}
+function resetEMI(){ document.getElementById('emi-amount').value='';document.getElementById('emi-rate').value='';document.getElementById('emi-months').value='';document.getElementById('emiResult').innerText='';}
+
+/* ---------- accessibility: initial language set to Hindi labels (already) ---------- */
+</script>
+
+</body>
+  </html>
